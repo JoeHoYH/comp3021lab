@@ -1,7 +1,9 @@
 package base;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Folder {
+public class Folder implements Comparable<Folder>{
 	private ArrayList<Note> notes;
 	private String name;
 	
@@ -20,6 +22,58 @@ public class Folder {
 	
 	public ArrayList<Note> getNotes(){
 		return notes;
+	}
+	
+	public void sortNotes() {
+		Collections.sort(notes);
+	}
+	
+	public List<Note> searchNotes(String keywords){
+		String[] parsedKeywords = keywords.toLowerCase().split(" ");
+		ArrayList<String[]> keywordsList = new ArrayList<String[]>();
+		for (int i =0; i < parsedKeywords.length;i++) {
+			if(i+1!=parsedKeywords.length&&parsedKeywords[i+1].equals("or")) {
+				keywordsList.add(new String[] {parsedKeywords[i],parsedKeywords[i+2]});
+				i+=2;
+			}
+			else {
+				keywordsList.add(new String[] {parsedKeywords[i]});
+			}
+		}
+		
+		ArrayList<Note> result = new ArrayList<Note>();	
+		for(Note note: notes) {
+			if(note instanceof ImageNote) {
+				outer:for(String[] sl:keywordsList) {
+					for(String s:sl) {
+						if(note.getTitle().toLowerCase().contains(s)) {
+							break;
+						}else if(s==sl[sl.length-1]) {
+							break outer;
+						}
+					}
+					if(sl==keywordsList.get(keywordsList.size()-1)) {
+						result.add(note);
+					}
+				}
+			}
+			else {
+				outer:for(String[] sl:keywordsList) {
+					for(String s:sl) {
+						if(note.getTitle().toLowerCase().contains(s) || ((TextNote)note).getContent().toLowerCase().contains(s)) {
+							break;
+						}else if(s==sl[sl.length-1]) {
+							break outer;
+						}
+					}
+					if(sl==keywordsList.get(keywordsList.size()-1)) {
+						result.add(note);
+					}
+				}
+			}
+		}
+		return result;
+		
 	}
 
 	@Override
@@ -60,6 +114,11 @@ public class Folder {
 			}
 		}
 		return name + ":" + nText + ":" + nImage;
+	}
+
+	@Override
+	public int compareTo(Folder o) {
+		return name.compareTo(o.name);
 	}
 	
 }

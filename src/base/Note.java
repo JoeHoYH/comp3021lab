@@ -1,6 +1,6 @@
 package base;
 import java.util.Date;
-public class Note {
+public class Note implements Comparable<Note>{
 	private Date date;
 	private String title;
 	 
@@ -29,6 +29,15 @@ public class Note {
 			return false;
 		Note other = (Note) obj;
 		return title.equals(other.title);
+	}
+
+	@Override
+	public int compareTo(Note o) {
+		return date.compareTo(o.date);
+	}
+	
+	public String toString(){
+		return date.toString()+ "\t"+title;
 	}
 
 }

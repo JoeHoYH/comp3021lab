@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-public class TextNote extends Note implements java.io.Serializable{
+public class TextNote extends Note {
 	private static final long serialVersionUID = 1L;
 	private String content;
 	

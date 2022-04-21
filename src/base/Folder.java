@@ -76,6 +76,16 @@ public class Folder implements Comparable<Folder>,java.io.Serializable{
 		return result;
 		
 	}
+	
+	public boolean removeNotes(String title) {
+		for(Note n:notes) {
+			if(n.getTitle().equals(title)) {
+				notes.remove(n);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public int hashCode() {

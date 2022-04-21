@@ -2,6 +2,7 @@ package base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -97,4 +98,23 @@ public class NoteBook implements java.io.Serializable {
 		}
 		return true;
 	}
+	public boolean save(File file) {
+		FileOutputStream fos = null;
+		ObjectOutputStream ous = null;
+		
+		try {
+			fos = new FileOutputStream(file);
+			ous = new ObjectOutputStream(fos);
+			ous.writeObject(this);
+			ous.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	public void addFolder(String folderName) {
+		folders.add(new Folder(folderName));
+	}
+	
 }
